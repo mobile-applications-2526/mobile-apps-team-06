@@ -1,4 +1,4 @@
-import { View, FlatList, Dimensions } from "react-native";
+import { Dimensions, FlatList } from "react-native";
 import RecipeCard from "../components/RecipeCard";
 
 const testRecipes = [
@@ -37,6 +37,7 @@ const Home = () => {
       showsVerticalScrollIndicator={false}
       snapToAlignment="start"
       decelerationRate="fast"
+      disableIntervalMomentum={true}
       bounces={false}
       ContentInsetAdjustmentBehavior="never"
     />
