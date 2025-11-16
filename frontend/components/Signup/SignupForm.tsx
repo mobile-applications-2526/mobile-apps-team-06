@@ -1,3 +1,6 @@
+import UserService from "@/services/UserService";
+import { LoggedInUser, UserSignupInput } from "@/types/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -14,21 +17,53 @@ const SignupForm = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [usernameError, setUsernameError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const router = useRouter();
+
+    const clearErrors = () => {
+        setUsernameError("");
+        setEmailError("");
+        setPasswordError("");
+    }
 
     const validate = () => {
         if (!username || !email || !password) {
             Alert.alert("Validation", "Please enter username, email and password.");
-            return;
+            setUsernameError("Please enter username, email and password.");
+            setEmailError("Please enter username, email and password.");
+            setPasswordError("Please enter username, email and password.");
+            return false;
         }
         if (!email.includes("@")) {
             Alert.alert("Validation", "Please enter a valid email address.");
-            return;
+            return false;
         }
+        return true;
     }
 
-    const handleSubmit = () => {
-        validate()
+    const handleSubmit = async() => {
+        clearErrors();
+        if (!validate()) return;
+
+        const userInput: UserSignupInput = {
+            username, email, password
+        }
+
+        const response = await UserService.signUp(userInput);
+
+        if (response?.ok) {
+            const loggedInUser: LoggedInUser = await response.json();
+            await AsyncStorage.setItem("loggedInUser", JSON.stringify({
+                token: loggedInUser.token,
+                username: loggedInUser.username,
+                role: loggedInUser.role
+            }));
+            router.replace('/');
+        } else {
+            console.error("Error setting storage in sign up");
+        }
     };
 
     return (
@@ -53,8 +88,8 @@ const SignupForm = () => {
                         autoCapitalize="none"
                         placeholder="Username"
                         placeholderTextColor="#777"
-                        value={email}
-                        onChangeText={setEmail}
+                        value={username}
+                        onChangeText={setUsername}
                     />
                 </View>
 
@@ -84,6 +119,9 @@ const SignupForm = () => {
                         onChangeText={setPassword}
                     />
                 </View>
+                {emailError && <Text className="text-red-500 font-semibold text-base text-center">
+                    {emailError}
+                </Text>}
 
                 {/* Log in Button */}
                 <TouchableOpacity

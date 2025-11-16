@@ -1,3 +1,6 @@
+import UserService from "@/services/UserService";
+import { LoggedInUser, UserLoginInput } from "@/types/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -13,21 +16,51 @@ import {
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const router = useRouter();
+
+    const clearErrors = () => {
+        setEmailError("");
+        setPasswordError("");
+    }
 
     const validate = () => {
         if (!email || !password) {
             Alert.alert("Validation", "Please enter email and password.");
-            return;
+            setEmailError("Please enter email and password.");
+            setPasswordError("Please enter email and password.");
+            return false;
         }
         if (!email.includes("@")) {
             Alert.alert("Validation", "Please enter a valid email address.");
-            return;
+            setEmailError("Please enter a valid email address.");
+            return false;
         }
+        return true;
     }
 
-    const handleSubmit = () => {
-        validate()
+    const handleSubmit = async() => {
+        clearErrors()
+        if (!validate()) return;
+
+        const userInput: UserLoginInput = {
+            email, password
+        }
+
+        const response = await UserService.login(userInput);
+
+        if (response?.ok) {
+            const loggedInUser: LoggedInUser = await response.json();
+            await AsyncStorage.setItem("loggedInUser", JSON.stringify({
+                token: loggedInUser.token,
+                username: loggedInUser.username,
+                role: loggedInUser.role
+            }));
+            router.replace('/');
+        } else {
+            console.error("Error setting storage in login");
+        }
     };
 
     return (
@@ -69,6 +102,9 @@ const LoginForm = () => {
                         onChangeText={setPassword}
                     />
                 </View>
+                    {emailError && <Text className="text-red-500 font-semibold text-base text-center">
+                        {emailError}
+                    </Text>}
 
                 {/* Log in Button */}
                 <TouchableOpacity

@@ -38,5 +38,15 @@ export type LoggedInUser = {
     role: Role
 }
 
+export type UserSignupInput = {
+    username: string,
+    email: string,
+    password: string
+}
+
+export type UserLoginInput = {
+    email: string,
+    password: string
+}
 
 export type Role = "USER" | "ADMIN"
