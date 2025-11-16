@@ -9,12 +9,11 @@ import {
     Platform,
 } from "react-native";
 
-
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = () => {
+    const validate = () => {
         if (!email || !password) {
             Alert.alert("Validation", "Please enter email and password.");
             return;
@@ -23,46 +22,62 @@ const LoginForm = () => {
             Alert.alert("Validation", "Please enter a valid email address.");
             return;
         }
+    }
+
+    const handleSubmit = () => {
+        validate()
     };
 
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : undefined}
-            className="flex-1 justify-center items-center p-4"
+            className="flex-1 bg-black justify-center px-6"
         >
-            <View className="bg-white rounded-lg p-5 shadow-md w-full" style={{ maxWidth: 400 }}>
-            <Text className="text-lg font-semibold mb-3 text-center text-black">Sign in</Text>
 
-            <Text className="text-sm  mt-2 text-black">Email</Text>
-            <TextInput
-                className="h-11 border border-gray-200 rounded-md px-3 mt-1 bg-gray-50 w-full text-black"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="you@example.com"
-                placeholderTextColor="#6B7280"
-                value={email}
-                onChangeText={setEmail}
-                textContentType="emailAddress"
-            />
+            {/* Form Container */}
+            <View className="w-full m-auto" style={{ maxWidth: 420 }}>
+                {/* Logo / Title */}
+                <Text className="text-white text-3xl font-extrabold text-center">
+                    Log in to Recipez
+                </Text>
 
-            <Text className="text-sm mt-3 text-black">Password</Text>
-            <TextInput
-                className="h-11 border border-gray-200 rounded-md px-3 mt-1 bg-gray-50 w-full text-black"
-                placeholder="••••••••"
-                placeholderTextColor="#6B7280"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                textContentType="password"
-            />
+                {/* Email Field */}
+                <View className="mb-5">
+                    <Text className="text-gray-300 mb-2 text-sm">Email</Text>
+                    <TextInput
+                        className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        placeholder="you@example.com"
+                        placeholderTextColor="#777"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                </View>
 
-            <TouchableOpacity
-                className="mt-4 bg-blue-500 py-3 rounded-md items-center w-full"
-                onPress={handleSubmit}
-            >
-                <Text className="text-white font-semibold">Log in</Text>
-            </TouchableOpacity>
+                {/* Password Field */}
+                <View className="mb-5">
+                    <Text className="text-gray-300 mb-2 text-sm">Password</Text>
+                    <TextInput
+                        className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
+                        placeholder="••••••••"
+                        placeholderTextColor="#777"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                </View>
+
+                {/* Log in Button */}
+                <TouchableOpacity
+                    className="bg-red-500 py-3 rounded-lg items-center mt-2"
+                    onPress={handleSubmit}
+                >
+                    <Text className="text-white font-semibold text-base">
+                        Log in
+                    </Text>
+                </TouchableOpacity>
+
             </View>
         </KeyboardAvoidingView>
     );

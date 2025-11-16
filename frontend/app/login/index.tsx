@@ -4,9 +4,7 @@ import { View } from "react-native";
 
 const LoginPage = () => {
     return (
-        <View>
             <LoginForm/>
-        </View>
     )
 }
 
