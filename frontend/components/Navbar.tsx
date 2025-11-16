@@ -1,9 +1,12 @@
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
 import { View, Text } from "react-native";
 
 export const NAVBAR_HEIGHT = 72;
 
 const Navbar = () => {
+    const router = useRouter();
+
+
     return (
         <>
             <View style={{height: NAVBAR_HEIGHT}} className="flex-row justify-center gap-20 p-5 bg-white">
