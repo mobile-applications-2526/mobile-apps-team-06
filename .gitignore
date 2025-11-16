@@ -44,3 +44,5 @@ app-example
 
 # intellij stuff
 .idea/
+
+frontend/.env
