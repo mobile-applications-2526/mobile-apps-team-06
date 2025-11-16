@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { View } from "react-native";
 
-const Upload = () => {
+const UploadPage = () => {
     return (
         <>
             <View>
@@ -11,4 +11,4 @@ const Upload = () => {
     )
 }
 
-export default Upload;
+export default UploadPage;

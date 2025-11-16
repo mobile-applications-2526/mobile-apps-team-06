@@ -32,4 +32,11 @@ export type Profile = {
     posts: Set<Recipe>
 }
 
+export type LoggedInUser = {
+    token: string,
+    username: string,
+    role: Role
+}
+
+
 export type Role = "USER" | "ADMIN"

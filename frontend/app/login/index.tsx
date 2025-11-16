@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { View } from "react-native";
 
-const AccountPage = () => {
+const LoginPage = () => {
     return (
         <View>
             <Navbar/>
@@ -9,4 +9,4 @@ const AccountPage = () => {
     )
 }
 
-export default AccountPage;
+export default LoginPage;
