@@ -137,7 +137,7 @@ const SignupForm = () => {
                     <Text className="text-center text-gray-400">
                         Have an account already?{" "}
                     </Text>
-                    <TouchableOpacity onPress={() => router.push("/login")}>
+                    <TouchableOpacity onPress={() => router.replace("/login")}>
                         <Text className="text-red-500 font-semibold">
                         Login in!
                         </Text>
