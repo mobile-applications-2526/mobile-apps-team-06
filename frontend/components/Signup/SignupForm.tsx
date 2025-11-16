@@ -10,14 +10,15 @@ import {
     Platform,
 } from "react-native";
 
-const LoginForm = () => {
+const SignupForm = () => {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
 
     const validate = () => {
-        if (!email || !password) {
-            Alert.alert("Validation", "Please enter email and password.");
+        if (!username || !email || !password) {
+            Alert.alert("Validation", "Please enter username, email and password.");
             return;
         }
         if (!email.includes("@")) {
@@ -40,8 +41,22 @@ const LoginForm = () => {
             <View className="w-full m-auto" style={{ maxWidth: 420 }}>
                 {/* Logo / Title */}
                 <Text className="text-white text-3xl font-extrabold text-center">
-                    Log in to Recipez
+                    Sign up to Recipez
                 </Text>
+
+                {/* Username Field */}
+                <View className="mb-5">
+                    <Text className="text-gray-300 mb-2 text-sm">Username</Text>
+                    <TextInput
+                        className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
+                        keyboardType="default"
+                        autoCapitalize="none"
+                        placeholder="Username"
+                        placeholderTextColor="#777"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                </View>
 
                 {/* Email Field */}
                 <View className="mb-5">
@@ -76,16 +91,16 @@ const LoginForm = () => {
                     onPress={handleSubmit}
                 >
                     <Text className="text-white font-semibold text-base">
-                        Log in
+                        Sign up
                     </Text>
                 </TouchableOpacity>
                 <View className="flex-row pt-10 justify-center">
                     <Text className="text-center text-gray-400">
-                        Don't have an account?{" "}
+                        Have an account already?{" "}
                     </Text>
-                    <TouchableOpacity onPress={() => router.push("/signup")}>
+                    <TouchableOpacity onPress={() => router.push("/login")}>
                         <Text className="text-red-500 font-semibold">
-                        Create one right here!
+                        Login in!
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -94,4 +109,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default SignupForm;
