@@ -38,6 +38,7 @@ const SignupForm = () => {
         }
         if (!email.includes("@")) {
             Alert.alert("Validation", "Please enter a valid email address.");
+            setEmailError("Please enter a valid email address.");
             return false;
         }
         return true;
