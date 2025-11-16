@@ -1,5 +1,6 @@
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import RecipeCard from "../components/RecipeCard";
+import Navbar, { NAVBAR_HEIGHT } from "@/components/Navbar";
 
 const testRecipes = [
   {
@@ -24,23 +25,28 @@ const testRecipes = [
     },
 ];
 
-const { height } = Dimensions.get("window");
+const { height: windowHeight } = Dimensions.get("window");
+const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
 
 const Home = () => {
   return (
-    <FlatList
-      data={testRecipes}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <RecipeCard recipe={item} />}
-      pagingEnabled
-      snapToInterval={height}
-      showsVerticalScrollIndicator={false}
-      snapToAlignment="start"
-      decelerationRate="fast"
-      disableIntervalMomentum={true}
-      bounces={false}
-      ContentInsetAdjustmentBehavior="never"
-    />
+    <View className="flex-1">
+      <FlatList
+        data={testRecipes}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <RecipeCard recipe={item} />}
+        pagingEnabled
+        snapToInterval={ITEM_HEIGHT}
+        showsVerticalScrollIndicator={false}
+        snapToAlignment="start"
+        decelerationRate="fast"
+        disableIntervalMomentum={true}
+        bounces={false}
+        contentInsetAdjustmentBehavior="never"
+        style={{flex: 1}}
+      />
+      <Navbar />
+    </View>
   );
 };
 

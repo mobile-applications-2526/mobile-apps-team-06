@@ -1,12 +1,15 @@
 import { View, Text, ImageBackground, Dimensions } from "react-native";
-const { height } = Dimensions.get("window");
+import { NAVBAR_HEIGHT } from "./Navbar";
+
+const { height: windowHeight } = Dimensions.get("window");
+const CARD_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
 
 const RecipeCard = ({ recipe }) => (
   <ImageBackground
     source={{ uri: recipe.image }}
     resizeMode="cover"
     className="w-full"
-    style={{ height }}
+    style={{ height: CARD_HEIGHT }}
   >
     <View className="flex-1 justify-end bg-black/20 p-6">
       <Text className="text-white text-3xl font-bold mb-2">
