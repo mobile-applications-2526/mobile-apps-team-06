@@ -1,11 +1,16 @@
+import Profile from "@/components/Account/Profile";
+import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
 import Navbar from "@/components/Navbar";
 import { View } from "react-native";
 
 const AccountPage = () => {
     return (
-        <View>
-            <Navbar/>
-        </View>
+        <CheckIfAuthenticated>
+            <View>
+                <Profile/>
+                <Navbar/>
+            </View>
+        </CheckIfAuthenticated>
     )
 }
 

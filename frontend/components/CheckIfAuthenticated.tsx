@@ -1,3 +1,4 @@
+import UserService from '@/services/UserService';
 import { LoggedInUser } from '@/types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -24,6 +25,17 @@ const CheckIfAuthenticated = ({children}: Props) => {
                 return
             } else {
                 setLoading(false);
+            }
+            
+            if (parsedValue.token) {
+                const response = await UserService.checkAuth();
+
+                if (!response?.ok) {
+                    setRedirecting(true);
+                    AsyncStorage.clear()
+                    router.replace("/login")
+                    return
+                }
             }
             
         } catch (e) {
