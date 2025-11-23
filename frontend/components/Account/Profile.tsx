@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { View, Pressable, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { ArrowLeft, Grid3x3, Heart } from "lucide-react-native";
 import PopUpAreYouSure from "../PopUpAreYouSure";
+import RecipeProfileGrid from "./RecipeProfileGrid";
 
 type Props = {
     user: User | undefined;
@@ -51,7 +52,7 @@ const Profile: React.FC<Props> = ({user}: Props) => {
     }
 
     return (
-        <View>
+        <View className="bg-black flex-1">
             {/* Header */}
             <View className="sticky top-0 z-50 bg-black backdrop-blur-lg border-b border-white/10 px-4 py-4">
                 <View className="flex-row items-center gap-4 pt-10">
@@ -110,19 +111,15 @@ const Profile: React.FC<Props> = ({user}: Props) => {
             </View>
 
             {/* Tab Content */}
-            {/* <View className="flex-1">
+            <View>
                 {activeTab === "posts" && (
-                    <RecipeGrid
-                        recipes={user.profile.posts}
-                    />
+                    <RecipeProfileGrid recipes={user.profile.posts}/>   
                 )}
 
                 {activeTab === "favorites" && (
-                    <RecipeGrid
-                        recipes={user.profile.favorites}
-                    />
+                    <RecipeProfileGrid recipes={user.profile.favorites}/>  
                 )}
-            </View> */}
+            </View>
             
         </View>
     )

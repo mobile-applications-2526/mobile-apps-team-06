@@ -1,5 +1,5 @@
 export type Recipe = {
-    id: string,
+    id: Id,
     title: string,
     description: string,
     difficulty: string,
@@ -12,9 +12,13 @@ export type Recipe = {
     coverImageURL: string,
     favorites: Profile[]
 }
+// Type purely because the JSON object for the different types is {id: {id: string}}
+export type Id = {
+    id: string;
+}
 
 export type User = {
-    id: string,
+    id: Id,
     username: string,
     email: string,
     createdAt: Date,
@@ -23,7 +27,7 @@ export type User = {
 }
 
 export type Profile = {
-    id: string,
+    id: Id,
     createdAt: Date,
     bio: string,
     isPrivate: boolean,

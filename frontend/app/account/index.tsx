@@ -1,10 +1,10 @@
 import Profile from "@/components/Account/Profile";
 import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
-import Navbar from "@/components/Navbar";
+import Navbar, { NAVBAR_HEIGHT } from "@/components/Navbar";
 import UserService from "@/services/UserService";
 import { User } from "@/types/types";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const AccountPage = () => {
     const [user, setUser] = useState<User>();
@@ -30,9 +30,9 @@ const AccountPage = () => {
 
     return (
         <CheckIfAuthenticated>
-            <View>
+            <View className="flex-1 bg-black">
                 <Profile user={user}/>
-                <Navbar/>
+                <Navbar />
             </View>
         </CheckIfAuthenticated>
     )
