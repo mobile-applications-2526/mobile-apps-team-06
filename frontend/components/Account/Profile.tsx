@@ -1,15 +1,31 @@
 import UserService from "@/services/UserService";
-import { User } from "@/types/types";
+import { LoggedInUser, User } from "@/types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Pressable, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { ArrowLeft, Grid3x3, Heart } from "lucide-react-native";
 
-const Profile: React.FC = () => {
-    const [user, setUser] = useState<User>();
+type Props = {
+    user: User | undefined;
+}
+
+const Profile: React.FC<Props> = ({user}: Props) => {
     const [activeTab, setActiveTab] = useState<"posts" | "favorites">("posts");
+    const [loggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
     const router = useRouter();
+
+    const fetchLoggedInUser = async() => {
+        try {
+            const response = await AsyncStorage.getItem("loggedInUser");
+            if (!response) {
+                console.error("Could not fetch the logged in user")
+            }
+            setLoggedInUser(response ? JSON.parse(response) : null);
+        } catch (e) {
+            console.error("Could not fetch logged in user " + e)
+        }
+    }
     
     const handleLogOut = async() => {
         try {
@@ -20,23 +36,10 @@ const Profile: React.FC = () => {
         }
     }
 
-    const fetchUserProfile = async() => {
-        try {
-            const response = await UserService.fetchUserProfile();
-            const user: User = await response?.json()
-            if (!response?.ok || !user) {
-                console.error("User profile could not be fetched");
-            }
-            setUser(user);
-        } catch (e) {
-            console.error("Error fetching profile: " + e);
-        }
-
-    }
-
     useEffect(() => {
-        fetchUserProfile()
+        fetchLoggedInUser();
     }, [])
+
 
     if (!user) {
         return (
@@ -79,11 +82,11 @@ const Profile: React.FC = () => {
                 </View>
                 
                 {/* Log out button */}
-                <View className="pt-5">
+                {user.username == loggedInUser?.username && <View className="pt-5">
                     <Pressable onPress={() => handleLogOut()} className="w-full py-2 bg-red-500 rounded-lg active:bg-white/20">
                         <Text className="text-center text-white text-base">Log out</Text>
                     </Pressable>
-                </View>
+                </View>}
             </View>
 
             {/* Tabs */}
