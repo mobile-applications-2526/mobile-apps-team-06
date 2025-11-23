@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Pressable, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { ArrowLeft, Grid3x3, Heart } from "lucide-react-native";
+import PopUpAreYouSure from "../PopUpAreYouSure";
 
 type Props = {
     user: User | undefined;
@@ -83,9 +84,7 @@ const Profile: React.FC<Props> = ({user}: Props) => {
                 
                 {/* Log out button */}
                 {user.username == loggedInUser?.username && <View className="pt-5">
-                    <Pressable onPress={() => handleLogOut()} className="w-full py-2 bg-red-500 rounded-lg active:bg-white/20">
-                        <Text className="text-center text-white text-base">Log out</Text>
-                    </Pressable>
+                    <PopUpAreYouSure buttonText="Log out" onAction={handleLogOut} message="Are you sure you want to log out?" yesOption="Log out"/>
                 </View>}
             </View>
 
