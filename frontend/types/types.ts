@@ -10,7 +10,7 @@ export type Recipe = {
     tags: string[],
     poster: Profile,
     coverImageURL: string,
-    favorites: Set<Profile>
+    favorites: Profile[]
 }
 
 export type User = {
@@ -28,8 +28,8 @@ export type Profile = {
     bio: string,
     isPrivate: boolean,
     user: User,
-    favorites: Set<Recipe>,
-    posts: Set<Recipe>
+    favorites: Recipe[],
+    posts: Recipe[]
 }
 
 export type LoggedInUser = {

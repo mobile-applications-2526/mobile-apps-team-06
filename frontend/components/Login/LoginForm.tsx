@@ -18,11 +18,15 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [statusError, setStatusError] = useState("");
+    const [statusSuccess, setStatusSuccess] = useState("");
     const router = useRouter();
 
     const clearErrors = () => {
         setEmailError("");
         setPasswordError("");
+        setStatusError("");
+        setStatusSuccess("");
     }
 
     const validate = () => {
@@ -57,8 +61,10 @@ const LoginForm = () => {
                 username: loggedInUser.username,
                 role: loggedInUser.role
             }));
+            setStatusSuccess("Successfully logged in! Redirecting you to the home page...")
             router.replace('/');
         } else {
+            setStatusError("Error occured while trying to log in! Try again...")
             console.error("Error setting storage in login");
         }
     };
@@ -104,6 +110,12 @@ const LoginForm = () => {
                 </View>
                     {emailError && <Text className="text-red-500 font-semibold text-base text-center">
                         {emailError}
+                    </Text>}
+                    {statusError && <Text className="text-red-500 font-semibold text-base text-center">
+                        {statusError}
+                    </Text>}
+                    {statusSuccess && <Text className="text-red-500 font-semibold text-base text-center">
+                        {statusSuccess}
                     </Text>}
 
                 {/* Log in Button */}
