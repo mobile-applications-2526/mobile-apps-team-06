@@ -1,5 +1,5 @@
 export type Recipe = {
-    id: string,
+    id: Id,
     title: string,
     description: string,
     difficulty: string,
@@ -10,11 +10,15 @@ export type Recipe = {
     tags: string[],
     poster: Profile,
     coverImageURL: string,
-    favorites: Set<Profile>
+    favorites: Profile[]
+}
+// Type purely because the JSON object for the different types is {id: {id: string}}
+export type Id = {
+    id: string;
 }
 
 export type User = {
-    id: string,
+    id: Id,
     username: string,
     email: string,
     createdAt: Date,
@@ -23,13 +27,30 @@ export type User = {
 }
 
 export type Profile = {
-    id: string,
+    id: Id,
     createdAt: Date,
     bio: string,
     isPrivate: boolean,
     user: User,
-    favorites: Set<Recipe>,
-    posts: Set<Recipe>
+    favorites: Recipe[],
+    posts: Recipe[]
+}
+
+export type LoggedInUser = {
+    token: string,
+    username: string,
+    role: Role
+}
+
+export type UserSignupInput = {
+    username: string,
+    email: string,
+    password: string
+}
+
+export type UserLoginInput = {
+    email: string,
+    password: string
 }
 
 export type Role = "USER" | "ADMIN"
