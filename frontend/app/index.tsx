@@ -1,43 +1,48 @@
-import { Dimensions, FlatList, View } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList, View, Text } from "react-native";
 import RecipeCard from "../components/RecipeCard";
 import Navbar, { NAVBAR_HEIGHT } from "@/components/Navbar";
 import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
-import { useEffect } from "react";
-
-const testRecipes = [
-  {
-    id: "1",
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-    title: "Creamy Garlic Pasta",
-  },
-  {
-    id: "2",
-    image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80",
-    title: "Healthy Avocado Salad",
-  },
-  {
-      id: "3",
-      image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-      title: "Creamy Garlic Pasta",
-    },
-    {
-      id: "4",
-      image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80",
-      title: "Healthy Avocado Salad",
-    },
-];
+import { useEffect, useState } from "react";
+import { RecipeService } from "@/services/RecipeService";
 
 const { height: windowHeight } = Dimensions.get("window");
 const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
 
 const Home = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch recipes on mount
+    RecipeService.getRecipes(0, 10)
+      .then(data => {
+        console.log("Recipes loaded:", data);
+        setRecipes(data.content); // Spring Boot returns { content: [...] }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error loading recipes:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <CheckIfAuthenticated>
+        <View className="flex-1 bg-black justify-center items-center">
+          <ActivityIndicator size="large" color="#fff" />
+          <Text className="text-white mt-4">Loading recipes...</Text>
+        </View>
+      </CheckIfAuthenticated>
+    );
+  }
 
   return (
     <CheckIfAuthenticated>
       <View className="flex-1">
         <FlatList
-          data={testRecipes}
-          keyExtractor={(item) => item.id}
+          data={recipes}
+          keyExtractor={(item) => item.id.id} // Your Recipe has nested id structure
           renderItem={({ item }) => <RecipeCard recipe={item} />}
           pagingEnabled
           snapToInterval={ITEM_HEIGHT}
@@ -54,5 +59,4 @@ const Home = () => {
     </CheckIfAuthenticated>
   );
 };
-
 export default Home;
