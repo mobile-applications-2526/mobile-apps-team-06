@@ -12,6 +12,36 @@ export type Recipe = {
     coverImageURL: string,
     favorites: Profile[]
 }
+
+export type PaginatedRecipesResponse = {
+  content: Recipe[];
+  pageable: Pageable;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: Sort;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+};
+
+export type Pageable = {
+  pageNumber: number;
+  pageSize: number;
+  sort: Sort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+};
+
+export type Sort = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+};
+
 // Type purely because the JSON object for the different types is {id: {id: string}}
 export type Id = {
     id: string;

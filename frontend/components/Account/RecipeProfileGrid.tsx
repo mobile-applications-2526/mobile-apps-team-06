@@ -27,7 +27,7 @@ const GridItem = ({ item }: { item: Recipe }) => {
       onPress={() => console.log(item.coverImageURL)}
       onPressIn={pressIn}
       onPressOut={pressOut}
-      className="w-1/3 aspect-square p-[1px]"
+      className="w-1/3 p-[1px]"
     >
       <Animated.View
         style={{ transform: [{ scale }] }}
@@ -39,7 +39,7 @@ const GridItem = ({ item }: { item: Recipe }) => {
               ? { uri: item.coverImageURL }
               : { uri: "https://placehold.co/600x400/png" }
           }
-          className="w-full h-full"
+          className="w-full aspect-square"
           resizeMode="cover"
         />
       </Animated.View>
@@ -51,8 +51,8 @@ const RecipeProfileGrid: React.FC<Props> = ({ recipes }) => {
   return (
     <FlatList
       data={recipes}
+      keyExtractor={(item) => item.id.id}
       renderItem={({ item }) => <GridItem item={item} />}
-      keyExtractor={(item, index) => index.toString()}
       numColumns={3}
       showsVerticalScrollIndicator={false}
       className="bg-black"
