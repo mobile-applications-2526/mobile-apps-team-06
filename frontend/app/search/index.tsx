@@ -14,6 +14,8 @@ const SearchPage: React.FC = () => {
     const router = useRouter();
 
     const submitSearch = () => {
+        if (!search.trim()) return;
+        
         addSearch(search);
         router.push({
             pathname: '/search/[SearchTermPage]',
