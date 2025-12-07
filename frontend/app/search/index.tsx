@@ -1,11 +1,19 @@
 import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
 import Navbar from "@/components/Navbar";
+import DisplaySearchHistory from "@/components/Search/DisplaySearchHistory";
 import SearchBar from "@/components/Search/SearchBar";
-import { useState } from "react";
+import useSearchHistory from "@/components/Search/useSearchHistory";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 const SearchPage: React.FC = () => {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState<string>("");
+    const {searchHistory, addSearch, clearHistory, removeFromHistory} = useSearchHistory();
+
+    const submitSearch = () => {
+        addSearch(search);
+    }
 
     return (
         <CheckIfAuthenticated>
@@ -14,8 +22,9 @@ const SearchPage: React.FC = () => {
                     placeholder={"Type something here..."}
                     onChangeText={(text: string) => setSearch(text)}
                     value={search}
-                    onSearch={() => console.log("searching..")}
+                    onSearch={() => submitSearch()}
                 />
+                <DisplaySearchHistory onRemove={removeFromHistory} history={searchHistory}/>
                 <Navbar/>
             </View>
         </CheckIfAuthenticated>
