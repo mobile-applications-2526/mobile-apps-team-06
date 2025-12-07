@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { Clock, X } from "lucide-react-native"
 import { View, Text, Pressable } from "react-native"
 
@@ -7,12 +8,22 @@ type Props = {
 }
 
 const DisplaySearchHistory: React.FC<Props> = ({history, onRemove}: Props) => {
+    const router = useRouter();
+
+    const goToSearch = (item: string) => {
+        router.push({
+            pathname: '/search/[SearchTermPage]',
+            params: { SearchTermPage: encodeURIComponent(item.trim()) },
+        });
+    }
+
     return (
         <View className="px-4 mt-3 top-14">
             {history && history.map((item, idx) => (
-                <View 
+                <Pressable
                     key={idx} 
                     className="flex-row items-center py-3 border-b border-neutral-800"
+                    onPress={() => goToSearch(item)}
                 >
                     {/* Left Icon */}
                     <Clock size={16} color="#9a9a9a" />
@@ -26,7 +37,7 @@ const DisplaySearchHistory: React.FC<Props> = ({history, onRemove}: Props) => {
                     <Pressable onPress={() => onRemove(item)}>
                         <X size={18} color="#6b6b6b" />
                     </Pressable>
-                </View>
+                </Pressable>
                     ))}
         </View>
     )   

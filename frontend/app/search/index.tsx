@@ -15,7 +15,7 @@ const SearchPage: React.FC = () => {
 
     const submitSearch = () => {
         addSearch(search);
-        router.replace({
+        router.push({
             pathname: '/search/[SearchTermPage]',
             params: { SearchTermPage: encodeURIComponent(search.trim()) },
         });
