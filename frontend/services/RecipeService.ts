@@ -21,10 +21,11 @@ const getRecipes = async(page: number = 0, size: number = 10) => {
 
 const searchRecipes = async(page: number = 0, size: number = 10, searchQuery: string) => {
     try {
-      const response = await fetch(`${API_URL}/recipes/search?page=${page}&size=${size}$sortBy=createdAt&direction=DESC`,
+      const response = await fetch(`${API_URL}/recipes/search?page=${page}&size=${size}&sortBy=createdAt&direction=DESC`,
     {
-      method: "GET",
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: "Bearer " + await getToken()
       },
       body: JSON.stringify({title: searchQuery})
