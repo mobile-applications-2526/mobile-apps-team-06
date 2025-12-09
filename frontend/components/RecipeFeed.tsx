@@ -1,12 +1,17 @@
-import { Dimensions, FlatList, View, ActivityIndicator, Text } from "react-native";
-import { useEffect, useState, useCallback } from "react";
-import RecipeCard from "./RecipeCard";
-import { NAVBAR_HEIGHT } from "./Navbar";
-import { Recipe } from "@/types/types";
 import RecipeService from "@/services/RecipeService";
+import { Recipe } from "@/types/types";
+import { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  Text,
+  View,
+} from "react-native";
+import RecipeCard from "./RecipeCard";
 
 const { height: windowHeight } = Dimensions.get("window");
-const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
+const ITEM_HEIGHT = Math.max(0, windowHeight);
 
 const RecipeFeed = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -21,22 +26,21 @@ const RecipeFeed = () => {
 
   const loadRecipes = async (pageNum: number, isInitial = false) => {
     if (loading) return;
-    
+
     setLoading(true);
     if (isInitial) setInitialLoading(true);
 
     try {
       const data = await RecipeService.getRecipes(pageNum, 10);
-      
+
       if (pageNum === 0) {
         setRecipes(data.content);
       } else {
-        setRecipes(prev => [...prev, ...data.content]);
+        setRecipes((prev) => [...prev, ...data.content]);
       }
-      
+
       setHasMore(!data.last);
       setPage(pageNum);
-      
     } catch (error) {
       console.error("Error loading recipes:", error);
     } finally {
@@ -63,7 +67,10 @@ const RecipeFeed = () => {
   const renderFooter = () => {
     if (!loading) return null;
     return (
-      <View style={{ height: ITEM_HEIGHT }} className="justify-center items-center bg-black">
+      <View
+        style={{ height: ITEM_HEIGHT }}
+        className="justify-center items-center bg-black"
+      >
         <ActivityIndicator size="large" color="#fff" />
         <Text className="text-white mt-4">Loading more recipes...</Text>
       </View>
@@ -84,27 +91,23 @@ const RecipeFeed = () => {
       data={recipes}
       keyExtractor={(item) => item.id.id}
       renderItem={({ item }) => <RecipeCard recipe={item} />}
-      
       pagingEnabled
       snapToInterval={ITEM_HEIGHT}
       snapToAlignment="start"
       decelerationRate="fast"
       disableIntervalMomentum={true}
-      
       getItemLayout={getItemLayout}
       removeClippedSubviews
       maxToRenderPerBatch={3}
       windowSize={5}
       initialNumToRender={2}
-      
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       ListFooterComponent={renderFooter}
-      
       showsVerticalScrollIndicator={false}
       bounces={false}
       contentInsetAdjustmentBehavior="never"
-      style={{flex: 1}}
+      style={{ flex: 1 }}
     />
   );
 };

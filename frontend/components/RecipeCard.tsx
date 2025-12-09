@@ -1,17 +1,18 @@
-import { View, Text, ImageBackground, Dimensions } from "react-native";
-import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
+import { Dimensions, ImageBackground, Text, View } from "react-native";
 
 const { height: windowHeight } = Dimensions.get("window");
-const CARD_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
+const CARD_HEIGHT = Math.max(0, windowHeight);
 
 type Props = {
-  recipe: Recipe
-}
+  recipe: Recipe;
+};
 
-const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
-  const imageUrl = recipe.coverImageURL || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80";
-  
+const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
+  const imageUrl =
+    recipe.coverImageURL ||
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80";
+
   return (
     <ImageBackground
       source={{ uri: imageUrl }}
@@ -23,9 +24,7 @@ const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
         <Text className="text-white text-3xl font-bold mb-2">
           {recipe.title}
         </Text>
-        <Text className="text-white text-base mb-2">
-          {recipe.description}
-        </Text>
+        <Text className="text-white text-base mb-2">{recipe.description}</Text>
         <Text className="text-white text-sm mb-8">
           {recipe.difficulty} • {recipe.prepare_time} min
         </Text>
