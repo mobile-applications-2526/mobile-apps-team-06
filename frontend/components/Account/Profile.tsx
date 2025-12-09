@@ -5,8 +5,10 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Pressable, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { ArrowLeft, Grid3x3, Heart } from "lucide-react-native";
-import PopUpAreYouSure from "../PopUpAreYouSure";
-import RecipeProfileGrid from "./RecipeProfileGrid";
+import PopUpAreYouSure from "@/components/PopUpAreYouSure";
+import RecipeProfileGrid from "@/components/Account/RecipeProfileGrid";
+import IsPrivate from "@/components/Account/isPrivate";
+
 
 type Props = {
     user: User | undefined;
@@ -71,7 +73,7 @@ const Profile: React.FC<Props> = ({user}: Props) => {
                 {/* Stats */}
                 <View className="flex gap-8">
                 <View className="text-center">
-                    <Text className="text-xl text-white">{user.profile.posts.length}</Text>
+                    <Text className="text-xl text-white">{user.profile ? user.profile.posts.length : 0}</Text>
                     <Text className="text-sm text-white/60">Posts</Text>
                 </View>
                 </View>
@@ -79,7 +81,7 @@ const Profile: React.FC<Props> = ({user}: Props) => {
                 {/* Bio */}
                 <View className="space-y-2 pt-5">
                     <Text className="text-l text-white/80">
-                        {user.profile.bio}
+                        {user.profile ? user.profile.bio : ""}
                     </Text>
                 </View>
                 
@@ -113,11 +115,11 @@ const Profile: React.FC<Props> = ({user}: Props) => {
             {/* Tab Content */}
             <View>
                 {activeTab === "posts" && (
-                    <RecipeProfileGrid recipes={user.profile.posts}/>   
+                    user.profile ? <RecipeProfileGrid recipes={user.profile.posts}/> : <IsPrivate/>
                 )}
 
                 {activeTab === "favorites" && (
-                    <RecipeProfileGrid recipes={user.profile.favorites}/>  
+                    user.profile ? <RecipeProfileGrid recipes={user.profile.favorites}/>  : <IsPrivate/>
                 )}
             </View>
             

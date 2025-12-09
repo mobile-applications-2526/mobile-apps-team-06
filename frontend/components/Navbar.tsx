@@ -10,13 +10,13 @@ const Navbar = () => {
     return (
         <>
             <View style={{height: NAVBAR_HEIGHT}} className="absolute bottom-0 left-0 right-0 w-full flex-row justify-around items-center bg-black border-t border-white/10">
-                <Link className="text-lg text-slate-700" href={"/"}>
+                <Link className="text-lg text-slate-700" href={"/"} replace>
                     <Home color={"white"}/>
                 </Link>
-                <Link className="text-lg text-slate-700" href={"/upload"}>
+                <Link className="text-lg text-slate-700" href={"/upload"} replace>
                     <Plus color={"white"}/>
                 </Link>
-                <Link className="text-lg text-slate-700" href={"/account"}>
+                <Link className="text-lg text-slate-700" href={"/account"} replace>
                     <User color={"white"}/>
                 </Link>
             </View>

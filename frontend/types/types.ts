@@ -52,7 +52,7 @@ export type User = {
     username: string,
     email: string,
     createdAt: Date,
-    profile: Profile,
+    profile?: Profile,
     role: Role
 }
 
