@@ -8,6 +8,24 @@ export default function RootLayout() {
             headerShown: false,
           }}
       >
+      <Stack.Screen 
+      name="index"
+      options={
+        {animation: "none"}
+      }
+      />
+      <Stack.Screen 
+      name="search/index"
+      options={
+        {animation: "none"}
+      }
+      />
+      <Stack.Screen 
+      name="upload/index"
+      options={
+        {animation: "none"}
+      }
+      />
     </Stack>
   );
 }
