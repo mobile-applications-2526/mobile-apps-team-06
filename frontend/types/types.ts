@@ -6,7 +6,7 @@ export type Recipe = {
     createdAt: Date,
     prepare_time: number,
     ingredients: string[],
-    steps: string,
+    steps: string[],
     tags: string[],
     poster: Profile,
     coverImageURL: string,
