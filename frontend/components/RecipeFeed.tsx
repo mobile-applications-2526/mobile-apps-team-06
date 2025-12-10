@@ -1,12 +1,21 @@
-import { Dimensions, FlatList, View, ActivityIndicator, Text } from "react-native";
+import { Dimensions, FlatList, View, ActivityIndicator, Text, StatusBar } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import RecipeCard from "./RecipeCard";
 import { NAVBAR_HEIGHT } from "./Navbar";
 import { RecipeService } from "@/services/RecipeService";
 import { Recipe } from "@/types/types";
 
-const { height: windowHeight } = Dimensions.get("window");
+const { height: windowHeight, width: windowWidth } = Dimensions.get("window");
+const screenHeight = Dimensions.get("screen").height;
 const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
+
+console.log("=== DIAGNOSTICS ===");
+console.log("Window Height:", windowHeight);
+console.log("Screen Height:", screenHeight);
+console.log("Status Bar Height:", StatusBar.currentHeight);
+console.log("NAVBAR_HEIGHT:", NAVBAR_HEIGHT);
+console.log("Calculated ITEM_HEIGHT:", windowHeight - NAVBAR_HEIGHT);
+console.log("==================");
 
 const RecipeFeed = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

@@ -19,7 +19,7 @@ const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
       className="w-full"
       style={{ height: CARD_HEIGHT }}
     >
-      <View className="flex-1 justify-end bg-black/20 p-6">
+      <View className="flex-1 justify-end bg-gradient-to-t black/30 p-6">
         <Text className="text-white text-3xl font-bold mb-2">
           {recipe.title}
         </Text>
