@@ -31,12 +31,10 @@ const SingleAccountPage = () => {
     }, [])
 
     return (
-        <CheckIfAuthenticated>
             <View className="flex-1 bg-black">
                 <Profile user={user}/>
                 <Navbar />
             </View>
-        </CheckIfAuthenticated>
     )
 }
 

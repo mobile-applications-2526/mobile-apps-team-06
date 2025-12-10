@@ -6,13 +6,11 @@ import TopNavBar from "@/components/TopNavBar";
 
 const Home = () => {
   return (
-    <CheckIfAuthenticated>
       <View className="flex-1">
         <TopNavBar/>
         <RecipeFeed />
         <Navbar />
       </View>
-    </CheckIfAuthenticated>
   );
 };
 
