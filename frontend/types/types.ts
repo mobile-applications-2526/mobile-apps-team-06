@@ -83,4 +83,15 @@ export type UserLoginInput = {
     password: string
 }
 
+export type RecipeInput = {
+    title: string,
+    description: string,
+    difficulty: string,
+    prepare_time: number,
+    ingredients: string[],
+    steps: string[],
+    tags: string[],
+    posterUsername: string
+}
+
 export type Role = "USER" | "ADMIN"
