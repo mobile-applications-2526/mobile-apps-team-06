@@ -1,14 +1,16 @@
-import { Dimensions, FlatList, View, ActivityIndicator, Text } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import { FlatList, View, ActivityIndicator, Text, useWindowDimensions } from "react-native";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import RecipeCard from "./RecipeCard";
-import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
 import RecipeService from "@/services/RecipeService";
 
-const { height: windowHeight } = Dimensions.get("window");
-const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
-
 const RecipeFeed = () => {
+  // Use hook instead of static dimensions for responsiveness
+  const { height: windowHeight } = useWindowDimensions();
+  
+  // Each item should be EXACTLY the full window height
+  const ITEM_HEIGHT = useMemo(() => windowHeight, [windowHeight]);
+
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -57,7 +59,7 @@ const RecipeFeed = () => {
       offset: ITEM_HEIGHT * index,
       index,
     }),
-    []
+    [ITEM_HEIGHT]
   );
 
   const renderFooter = () => {
@@ -103,8 +105,11 @@ const RecipeFeed = () => {
       
       showsVerticalScrollIndicator={false}
       bounces={false}
-      contentInsetAdjustmentBehavior="never"
-      style={{flex: 1}}
+      overScrollMode="never"
+      scrollEventThrottle={16}
+      
+      style={{ flex: 1 }}
+      contentContainerStyle={{ flexGrow: 1 }}
     />
   );
 };

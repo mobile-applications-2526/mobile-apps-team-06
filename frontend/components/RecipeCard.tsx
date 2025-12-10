@@ -1,36 +1,36 @@
-import { View, Text, ImageBackground, Dimensions } from "react-native";
-import { NAVBAR_HEIGHT } from "./Navbar";
+import { View, Text, ImageBackground, useWindowDimensions } from "react-native";
 import { Recipe } from "@/types/types";
 
-const { height: windowHeight } = Dimensions.get("window");
-const CARD_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
-
 type Props = {
-  recipe: Recipe
+  recipe: Recipe;
 }
 
-const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
+const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
+  // Use hooks for dynamic dimensions
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
+  
   const imageUrl = recipe.coverImageURL || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80";
   
   return (
-    <ImageBackground
-      source={{ uri: imageUrl }}
-      resizeMode="cover"
-      className="w-full"
-      style={{ height: CARD_HEIGHT }}
-    >
-      <View className="flex-1 justify-end bg-black/20 p-6">
-        <Text className="text-white text-3xl font-bold mb-2">
-          {recipe.title}
-        </Text>
-        <Text className="text-white text-base mb-2">
-          {recipe.description}
-        </Text>
-        <Text className="text-white text-sm mb-8">
-          {recipe.difficulty} • {recipe.prepare_time} min
-        </Text>
-      </View>
-    </ImageBackground>
+    <View style={{ height: windowHeight, width: windowWidth }}>
+      <ImageBackground
+        source={{ uri: imageUrl }}
+        resizeMode="cover"
+        style={{ flex: 1 }}
+      >
+        <View className="flex-1 justify-end bg-black/20 p-6 pb-24">
+          <Text className="text-white text-3xl font-bold">
+            {recipe.title}
+          </Text>
+          <Text className="text-white text-base mt-2">
+            {recipe.description}
+          </Text>
+          <Text className="text-white text-sm mt-1">
+            {recipe.difficulty} • {recipe.prepare_time} min
+          </Text>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 
