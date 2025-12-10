@@ -3,12 +3,11 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import RecipeCard from "./RecipeCard";
 import { Recipe } from "@/types/types";
 import RecipeService from "@/services/RecipeService";
+import { NAVBAR_HEIGHT } from "./Navbar";
 
 const RecipeFeed = () => {
-  // Use hook instead of static dimensions for responsiveness
   const { height: windowHeight } = useWindowDimensions();
   
-  // Each item should be EXACTLY the full window height
   const ITEM_HEIGHT = useMemo(() => windowHeight, [windowHeight]);
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -102,6 +101,7 @@ const RecipeFeed = () => {
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       ListFooterComponent={renderFooter}
+      ListFooterComponentStyle={{height: loading && hasMore ? ITEM_HEIGHT : NAVBAR_HEIGHT }}
       
       showsVerticalScrollIndicator={false}
       bounces={false}
