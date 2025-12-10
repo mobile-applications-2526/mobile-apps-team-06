@@ -1,10 +1,12 @@
+import DimensionsHelper from "@/components/DimensionsHelper";
 import Navbar from "@/components/Navbar";
 import { View } from "react-native";
 
 const UploadPage = () => {
     return (
         <>
-            <View>
+            <View style={{flex:1}}>
+                <DimensionsHelper/>
                 <Navbar/>
             </View>
         </>
