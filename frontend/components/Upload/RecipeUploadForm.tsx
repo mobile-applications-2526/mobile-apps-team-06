@@ -4,9 +4,11 @@ import * as ImagePicker from 'expo-image-picker';
 import {Picker} from "@react-native-picker/picker"
 import DynamicInputList from "./DynamicListComponent";
 import { RecipeInput } from "@/types/types";
+import RecipeService from "@/services/RecipeService";
+import { useRouter } from "expo-router";
 
 const RecipeUploadForm: React.FC = () => {
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [difficulty, setDifficulty] = useState<string>("");
@@ -19,6 +21,8 @@ const RecipeUploadForm: React.FC = () => {
     // Status messages
     const [success, setSuccess] = useState<string>("");
     const [error, setError] = useState<string>("");
+
+    const router = useRouter();
 
     const clearError = () => {
         setError("");
@@ -60,7 +64,7 @@ const RecipeUploadForm: React.FC = () => {
         let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ['images'],
                 allowsEditing: true,
-                aspect: [4,3],
+                aspect: [16,9],
                 quality: 1,
                 allowsMultipleSelection: false
             }
@@ -70,7 +74,11 @@ const RecipeUploadForm: React.FC = () => {
             return;
         }
 
-        setImage(result.assets[0].uri);
+        if (!result.assets[0]) {
+            return;
+        }
+
+        setImage(result.assets[0]);
     }
 
     const uploadRecipe = async() => {
@@ -87,11 +95,25 @@ const RecipeUploadForm: React.FC = () => {
             tags,
             steps
         }
+
+        if (!image?.uri) {
+            setError("No image file provided")
+            return;
+        }
+
+        const response = await RecipeService.addRecipe(recipeInput, image.uri);
+
+        if (response?.ok) {
+            setSuccess("Successfully created the recipe");
+            
+            ///CHANGE THIS LATER TO SEND TO RECIPE OVERVIEW PAGE
+            router.push("/account");
+        }
     }
     
 
     useEffect(() => {
-        //launchCamera()
+        launchCamera()
     },[])
 
     return (
@@ -121,7 +143,7 @@ const RecipeUploadForm: React.FC = () => {
                                 <View>
                                     <Text className="text-gray-300 mt-2 mb-2 text-sm">Selected image:</Text>
                                     <Image
-                                        source={{uri: image}}
+                                        source={{uri: image.uri}}
                                         className="w-full aspect-square"
                                         resizeMode="cover"
                                     />
