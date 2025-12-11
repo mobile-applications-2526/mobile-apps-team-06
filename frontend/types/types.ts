@@ -91,7 +91,7 @@ export type RecipeInput = {
     ingredients: string[],
     steps: string[],
     tags: string[],
-    posterUsername: string
+    posterUsername?: string
 }
 
 export type Role = "USER" | "ADMIN"

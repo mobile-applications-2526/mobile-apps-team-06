@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { KeyboardAvoidingView, Platform, View, Text, TextInput, TouchableOpacity, Pressable, Modal, ScrollView, Image } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from "@react-native-picker/picker"
+import DynamicInputList from "./DynamicListComponent";
 
 const RecipeUploadForm: React.FC = () => {
     const [image, setImage] = useState<string | null>(null);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [difficulty, setDifficulty] = useState<string>("");
-    const [prepareTime, setPrepareTime] = useState<number>(0);
+    const [showPicker, setShowPicker] = useState(false);
+    const [prepareTime, setPrepareTime] = useState<string>("0");
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [steps, setSteps] = useState<string[]>([]);
     const [tags, setTags] = useState<string[]>([]);
-    const [posterUsername, setPosterUsername] = useState<string>("");
 
 
     const requestPermission = async(): Promise<boolean> => {
@@ -44,6 +45,7 @@ const RecipeUploadForm: React.FC = () => {
 
         setImage(result.assets[0].uri);
     }
+    
 
     useEffect(() => {
         //launchCamera()
@@ -52,15 +54,43 @@ const RecipeUploadForm: React.FC = () => {
     return (
         <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    className="flex-1 bg-black justify-center px-6"
+                    className="flex-1 bg-black justify-center px-6 pt-20"
                 >
+                    <ScrollView>
         
                     {/* Form Container */}
-                    <View className="w-full m-auto" style={{ maxWidth: 420 }}>
+                    <View className="w-full m-auto pb-20" style={{ maxWidth: 420 }}>
                         {/* Logo / Title */}
-                        <Text className="text-white text-3xl font-extrabold text-center">
+                        <Text className="text-white text-3xl font-extrabold text-center mb-5">
                             Upload your recipe here!
                         </Text>
+
+                        {/* Image field */}
+                        <View className="mb-5">
+                            <Text className="text-gray-300 mb-2 text-sm">Image</Text>
+                            <Pressable 
+                                className="border border-dotted border-gray-300 active:border-red-500"
+                                onPress={launchCamera}
+                            >
+                                <Text className="text-gray-300 text-center text-sm p-5">Click to upload your image</Text>
+                            </Pressable>
+                            {image && 
+                                <View>
+                                    <Text className="text-gray-300 mt-2 mb-2 text-sm">Selected image:</Text>
+                                    <Image
+                                        source={{uri: image}}
+                                        className="w-full aspect-square"
+                                        resizeMode="cover"
+                                    />
+                                    <Pressable 
+                                        className="border bg-red-500 mt-2"
+                                        onPress={() => setImage("")}
+                                    >
+                                        <Text className="text-gray-300 text-center text-sm p-5">Remove image</Text>
+                                    </Pressable>
+                                </View>
+                            }
+                        </View>
         
                         {/* title Field */}
                         <View className="mb-5">
@@ -71,6 +101,8 @@ const RecipeUploadForm: React.FC = () => {
                                 autoCapitalize="none"
                                 placeholder="Cooked samon"
                                 placeholderTextColor="#777"
+                                onChangeText={(e) => setTitle(e)}
+                                value={title}
                             />
                         </View>
         
@@ -82,26 +114,47 @@ const RecipeUploadForm: React.FC = () => {
                                 placeholder="A fun, delicious and easy cooked samon recipe!"
                                 placeholderTextColor="#777"
                                 keyboardType="default"
+                                onChangeText={(e) => setDescription(e)}
+                                value={description}
                             />
                         </View>
 
                         {/* Difficulty Field */}
                         <View className="mb-5">
-                            <Text className="text-gray-300 mb-2 text-sm">Difficulty</Text>
+                        <Text className="text-gray-300 mb-2 text-sm">Difficulty</Text>
 
-                            <View className="h-12 rounded-lg bg-neutral-900 border border-neutral-700 px-2 justify-center">
-                                {/* <Picker
-                                selectedValue={difficulty}
-                                onValueChange={(value) => setDifficulty(value)}
-                                dropdownIconColor="#fff"
-                                style={{ color: "white", height: 50 }}
+                        <Pressable
+                            onPress={() => setShowPicker(true)}
+                            className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 justify-center"
+                        >
+                            <Text className="text-white">
+                            {difficulty || "Select Difficulty"}
+                            </Text>
+                        </Pressable>
+                        </View>
+
+                        <Modal visible={showPicker} transparent animationType="slide">
+                            <View className="flex-1 justify-end bg-black/40">
+                                <View className="bg-neutral-900 p-4 border-t border-neutral-700">
+
+                                <Picker
+                                    selectedValue={difficulty}
+                                    onValueChange={(value) => {
+                                    setDifficulty(value);
+                                    setShowPicker(false);
+                                    }}
+                                    style={{color: "white"}}
+                                    dropdownIconColor="#fff"
                                 >
+                                    <Picker.Item label="Very easy" value="Very easy" />
                                     <Picker.Item label="Easy" value="Easy" />
                                     <Picker.Item label="Medium" value="Medium" />
                                     <Picker.Item label="Hard" value="Hard" />
-                                </Picker> */}
+                                    <Picker.Item label="Very hard" value="Very hard" />
+                                </Picker>
+                                </View>
                             </View>
-                        </View>
+                        </Modal>
 
                         {/* Prepare time Field */}
                         <View className="mb-5">
@@ -110,10 +163,37 @@ const RecipeUploadForm: React.FC = () => {
                                 className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                                 placeholder="0"
                                 placeholderTextColor="#777"
-                                keyboardType="numeric"
+                                keyboardType="default"
+                                onChangeText={(e) => setPrepareTime(e)}
+                                value={prepareTime}
                             />
                         </View>
+
+                        {/* Ingredients Field */}
+                        <DynamicInputList
+                            label="Ingredients"
+                            values={ingredients}
+                            onChange={setIngredients}
+                            placeholder="Salmon"
+                            />
+                        
+                        {/* Steps Field */}
+                        <DynamicInputList
+                            label="Steps"
+                            values={steps}
+                            onChange={setSteps}
+                            placeholder="Dinner"
+                            />
+
+                        {/* Tags Field */}
+                        <DynamicInputList
+                            label="Tags"
+                            values={tags}
+                            onChange={setTags}
+                            placeholder="Dinner"
+                            />
                     </View>
+                    </ScrollView>
                 </KeyboardAvoidingView>
     )
 }
