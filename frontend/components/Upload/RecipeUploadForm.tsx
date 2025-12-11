@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, View, Text, TextInput, TouchableOpacity, Pressable, Modal, ScrollView, Image } from "react-native";
+import { KeyboardAvoidingView, Platform, View, Text, TextInput, TouchableOpacity, Pressable, Modal, ScrollView, Image, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from "@react-native-picker/picker"
 import DynamicInputList from "./DynamicListComponent";
@@ -26,12 +26,22 @@ const RecipeUploadForm: React.FC = () => {
 
     const validateFields = (): boolean => {
         if (!image || !description || !difficulty || !prepareTime || !ingredients || !steps || !tags) {
+            Alert.alert("You need to fill up all the fields!");
             setError("You need to fill up all the fields!");
             return false;
-        } else {
-            return true;
         }
+
+        const isValidNumberRegex: RegExp = /^[0-9]+$/;
+
+        if (!isValidNumberRegex.test(prepareTime)) {
+            Alert.alert("Prepare time needs to be a number.");
+            setError("Prepare time needs to be a number.");
+            return false;
+        }
+
+        return true;
     }
+
 
     const requestPermission = async(): Promise<boolean> => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -72,8 +82,10 @@ const RecipeUploadForm: React.FC = () => {
             title,
             description,
             difficulty,
-            prepare_time: prepareTime,
-
+            prepare_time: parseInt(prepareTime),
+            ingredients,
+            tags,
+            steps
         }
     }
     
@@ -87,10 +99,10 @@ const RecipeUploadForm: React.FC = () => {
                     behavior={Platform.OS === "ios" ? "padding" : undefined}
                     className="flex-1 bg-black justify-center px-6 pt-20"
                 >
-                    <ScrollView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
         
                     {/* Form Container */}
-                    <View className="w-full m-auto pb-20" style={{ maxWidth: 420 }}>
+                    <View className="w-full m-auto pb-24" style={{ maxWidth: 420 }}>
                         {/* Logo / Title */}
                         <Text className="text-white text-3xl font-extrabold text-center mb-5">
                             Upload your recipe here!
@@ -223,6 +235,20 @@ const RecipeUploadForm: React.FC = () => {
                             onChange={setTags}
                             placeholder="Dinner"
                             />
+                        {error && <Text className="text-red-500 font-semibold text-base text-center">
+                            {error}
+                        </Text>}
+                        {success && <Text className="text-green-500 font-semibold text-base text-center">
+                            {success}
+                        </Text>}
+                        <TouchableOpacity
+                            className="bg-red-500 py-3 rounded-lg items-center mt-2"
+                            onPress={uploadRecipe}
+                        >
+                            <Text className="text-white font-semibold text-base">
+                                Upload
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
