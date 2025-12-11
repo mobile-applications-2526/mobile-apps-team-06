@@ -48,9 +48,13 @@ const GridItem = ({ item }: { item: Recipe }) => {
 };
 
 const RecipeProfileGrid: React.FC<Props> = ({ recipes }) => {
+    const sortedRecipes = [...recipes].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    
   return (
     <FlatList
-      data={recipes}
+      data={sortedRecipes}
       keyExtractor={(item) => item.id.id}
       renderItem={({ item }) => <GridItem item={item} />}
       numColumns={3}

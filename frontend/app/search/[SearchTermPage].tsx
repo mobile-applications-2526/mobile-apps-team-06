@@ -24,7 +24,6 @@ const SearchTermPage = () => {
     }
     
     return (
-        <CheckIfAuthenticated>
             <View className="flex-1 bg-black">
                 <SearchBar
                     placeholder={"Type something here..."}
@@ -35,7 +34,6 @@ const SearchTermPage = () => {
                 <DisplaySearchedResults searchterm={SearchTermPage as string}/>
                 <Navbar/>
             </View>
-        </CheckIfAuthenticated>
     )
 }
 

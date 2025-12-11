@@ -1,3 +1,4 @@
+import { RecipeInput } from "@/types/types";
 import getToken from "@/utils/Token"
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL
@@ -42,7 +43,41 @@ const searchRecipes = async(page: number = 0, size: number = 10, searchQuery: st
   }
 
 
+const addRecipe = async(recipeInput: RecipeInput, imageURI: string) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("recipe", {
+      string: JSON.stringify(recipeInput),
+      type: "application/json",
+    } as any);
+
+    // Prepare file object
+    const filename = imageURI.split("/").pop() || "image.jpg";
+    const ext = filename.split(".").pop();
+    const mimeType = `image/${ext}`;
+
+    formData.append("file", {
+      uri: imageURI,
+      name: filename,
+      type: mimeType,
+    } as any);
+
+    const response = await fetch(`${API_URL}/recipes`, {
+      method: "POST",
+      headers: {Authorization: "Bearer " + await getToken()},
+      body: formData
+    })
+
+    return response;
+  } catch (e) {
+    console.error("Error creating a recipe: " + e)
+  }
+}
+
+
 export default {
   getRecipes,
   searchRecipes,
+  addRecipe,
 }

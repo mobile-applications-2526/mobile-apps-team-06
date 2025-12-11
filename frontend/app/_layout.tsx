@@ -1,8 +1,14 @@
-import { Stack } from "expo-router";
+import { Stack, useSegments } from "expo-router";
 import "../styles/globals.css";
+import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
+
+const PUBLIC_ROUTES = ["login", "signup"];
 
 export default function RootLayout() {
- return (
+  const segments = useSegments();
+  const routeName = segments[0] ?? "";
+
+  const stack = (
     <Stack
         screenOptions={{
             headerShown: false,
@@ -27,5 +33,13 @@ export default function RootLayout() {
       }
       />
     </Stack>
+  )
+
+  if (PUBLIC_ROUTES.includes(routeName)) {
+    return stack;
+  }
+
+ return (
+    <CheckIfAuthenticated>{stack}</CheckIfAuthenticated>
   );
 }
