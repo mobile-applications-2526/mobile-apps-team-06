@@ -87,7 +87,7 @@ export type RecipeInput = {
     title: string,
     description: string,
     difficulty: string,
-    prepare_time: number,
+    prepareTime: number,
     ingredients: string[],
     steps: string[],
     tags: string[],
