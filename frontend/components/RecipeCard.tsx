@@ -1,6 +1,7 @@
-import { View, Text, ImageBackground, Dimensions } from "react-native";
+import { View, Text, ImageBackground, Dimensions, Button } from "react-native";
 import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
+import { router } from "expo-router";
 
 const { height: windowHeight } = Dimensions.get("window");
 const CARD_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
@@ -29,6 +30,10 @@ const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
         <Text className="text-white text-sm mb-8">
           {recipe.difficulty} • {recipe.prepare_time} min
         </Text>
+        <Button 
+        title="More Info"
+        onPress={() => router.push(`/recipe/${recipe.id}`)}
+      />
       </View>
     </ImageBackground>
   );
