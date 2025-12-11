@@ -2,6 +2,7 @@ import { View, Text, ImageBackground, useWindowDimensions, TouchableOpacity } fr
 import { Recipe } from "@/types/types";
 import { Heart, ChevronRight, ArrowBigDown } from "lucide-react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
   recipe: Recipe;
@@ -9,6 +10,7 @@ type Props = {
 
 const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   
   const imageUrl = recipe.coverImageURL || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80";
   
@@ -20,7 +22,7 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
         style={{ flex: 1 }}
       >
         {/* Tags section upper part */}
-        <View className="pt-14 px-4">
+        <View style={{ paddingTop: insets.top + 24 }} className="px-4">
           <View className="flex-row flex-wrap gap-2">
             <View className="px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-md border border-white/30">
               <Text className="text-white text-xs font-medium">{recipe.prepare_time} min</Text>
@@ -53,7 +55,7 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
           </View>
 
           {/* Bottom stuff */}
-          <View className="px-6 pb-28">
+          <View style={{ paddingBottom: insets.bottom + 84 }} className="px-6">
             <View className="flex-row items-start justify-between mb-3">
               <View className="flex-1 pr-4">
                 <Text className="text-white text-4xl font-bold leading-tight">
