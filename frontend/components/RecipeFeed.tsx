@@ -2,8 +2,8 @@ import { Dimensions, FlatList, View, ActivityIndicator, Text } from "react-nativ
 import { useEffect, useState, useCallback } from "react";
 import RecipeCard from "./RecipeCard";
 import { NAVBAR_HEIGHT } from "./Navbar";
-import { RecipeService } from "@/services/RecipeService";
 import { Recipe } from "@/types/types";
+import RecipeService from "@/services/RecipeService";
 
 const { height: windowHeight } = Dimensions.get("window");
 const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);

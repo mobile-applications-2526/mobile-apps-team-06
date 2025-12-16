@@ -6,7 +6,7 @@ export type Recipe = {
     createdAt: Date,
     prepare_time: number,
     ingredients: string[],
-    steps: string,
+    steps: string[],
     tags: string[],
     poster: Profile,
     coverImageURL: string,
@@ -52,7 +52,7 @@ export type User = {
     username: string,
     email: string,
     createdAt: Date,
-    profile: Profile,
+    profile?: Profile,
     role: Role
 }
 
@@ -81,6 +81,17 @@ export type UserSignupInput = {
 export type UserLoginInput = {
     email: string,
     password: string
+}
+
+export type RecipeInput = {
+    title: string,
+    description: string,
+    difficulty: string,
+    prepareTime: number,
+    ingredients: string[],
+    steps: string[],
+    tags: string[],
+    posterUsername?: string
 }
 
 export type Role = "USER" | "ADMIN"

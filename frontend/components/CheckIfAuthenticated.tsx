@@ -12,6 +12,7 @@ type Props = {
 const CheckIfAuthenticated = ({children}: Props) => {
     const [loading, setLoading] = useState(true);
     const [redirecting, setRedirecting] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const router = useRouter();
     
     const fetchLoggedInUser = async() => {
@@ -36,6 +37,8 @@ const CheckIfAuthenticated = ({children}: Props) => {
                     router.replace("/login")
                     return
                 }
+
+                setIsAuthenticated(true);
             }
             
         } catch (e) {
@@ -54,6 +57,10 @@ const CheckIfAuthenticated = ({children}: Props) => {
         <ActivityIndicator size="large" />
       </View>
     );
+    }
+
+    if (!isAuthenticated) {
+        return null;
     }
     return <>{children}</>;
 }

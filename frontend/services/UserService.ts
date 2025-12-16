@@ -48,6 +48,21 @@ const fetchUserProfile = async() => {
     }
 }
 
+const fetchUserProfileByUsername = async(username: string) => {
+    try {
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/users/profile/" + username , {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + await getToken()
+            }
+        })
+        return response
+    } catch (e) {
+        console.error("Error trying to get user profile by username " + e)
+    }
+}
+
 const checkAuth = async() => {
     try {
         const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/users/auth", {
@@ -67,5 +82,6 @@ export default {
     login,
     signUp,
     fetchUserProfile,
+    fetchUserProfileByUsername,
     checkAuth,
 }
