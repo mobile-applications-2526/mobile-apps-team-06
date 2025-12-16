@@ -1,14 +1,19 @@
-import { Dimensions, FlatList, View, ActivityIndicator, Text } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import { FlatList, View, ActivityIndicator, Text, useWindowDimensions } from "react-native";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import RecipeCard from "./RecipeCard";
+import EndCard from "./EndCard";
 import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
 import RecipeService from "@/services/RecipeService";
 
-const { height: windowHeight } = Dimensions.get("window");
-const ITEM_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
+type FeedItem = Recipe | { type: 'END_CARD' };
 
 const RecipeFeed = () => {
+  const { height: windowHeight } = useWindowDimensions();
+  const flatListRef = useRef<FlatList>(null);
+
+  const ITEM_HEIGHT = useMemo(() => windowHeight, [windowHeight]);
+
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -21,22 +26,22 @@ const RecipeFeed = () => {
 
   const loadRecipes = async (pageNum: number, isInitial = false) => {
     if (loading) return;
-    
+
     setLoading(true);
     if (isInitial) setInitialLoading(true);
 
     try {
       const data = await RecipeService.getRecipes(pageNum, 10);
-      
+
       if (pageNum === 0) {
         setRecipes(data.content);
       } else {
         setRecipes(prev => [...prev, ...data.content]);
       }
-      
+
       setHasMore(!data.last);
       setPage(pageNum);
-      
+
     } catch (error) {
       console.error("Error loading recipes:", error);
     } finally {
@@ -45,6 +50,10 @@ const RecipeFeed = () => {
     }
   };
 
+  const scrollToTop = useCallback(() => {
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+  }, []);
+
   const handleLoadMore = useCallback(() => {
     if (hasMore && !loading) {
       loadRecipes(page + 1);
@@ -52,60 +61,81 @@ const RecipeFeed = () => {
   }, [hasMore, loading, page]);
 
   const getItemLayout = useCallback(
-    (_: any, index: number) => ({
-      length: ITEM_HEIGHT,
-      offset: ITEM_HEIGHT * index,
-      index,
-    }),
-    []
+      (_: any, index: number) => ({
+        length: ITEM_HEIGHT,
+        offset: ITEM_HEIGHT * index,
+        index,
+      }),
+      [ITEM_HEIGHT]
   );
 
+  const renderItem = ({ item }: { item: FeedItem }) => {
+    if ('type' in item && item.type === 'END_CARD') {
+      return <EndCard onScrollToTop={scrollToTop} />;
+    }
+    return <RecipeCard recipe={item as Recipe} />;
+  };
+
+  const dataWithEndCard = useMemo<FeedItem[]>(() => {
+    if (!hasMore && !loading && recipes.length > 0) {
+      return [...recipes, { type: 'END_CARD' }];
+    }
+    return recipes;
+  }, [recipes, hasMore, loading]);
+
   const renderFooter = () => {
-    if (!loading) return null;
+    if (!loading || !hasMore) return null;
     return (
-      <View style={{ height: ITEM_HEIGHT }} className="justify-center items-center bg-black">
-        <ActivityIndicator size="large" color="#fff" />
-        <Text className="text-white mt-4">Loading more recipes...</Text>
-      </View>
+        <View style={{ height: ITEM_HEIGHT }} className="justify-center items-center bg-black">
+          <ActivityIndicator size="large" color="#fff" />
+          <Text className="text-white mt-4">Loading more recipes...</Text>
+        </View>
     );
   };
 
   if (initialLoading) {
     return (
-      <View className="flex-1 bg-black justify-center items-center">
-        <ActivityIndicator size="large" color="#fff" />
-        <Text className="text-white mt-4">Loading recipes...</Text>
-      </View>
+        <View className="flex-1 bg-black justify-center items-center">
+          <ActivityIndicator size="large" color="#fff" />
+          <Text className="text-white mt-4">Loading recipes...</Text>
+        </View>
     );
   }
 
   return (
-    <FlatList
-      data={recipes}
-      keyExtractor={(item) => item.id.id}
-      renderItem={({ item }) => <RecipeCard recipe={item} />}
-      
-      pagingEnabled
-      snapToInterval={ITEM_HEIGHT}
-      snapToAlignment="start"
-      decelerationRate="fast"
-      disableIntervalMomentum={true}
-      
-      getItemLayout={getItemLayout}
-      removeClippedSubviews
-      maxToRenderPerBatch={3}
-      windowSize={5}
-      initialNumToRender={2}
-      
-      onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={renderFooter}
-      
-      showsVerticalScrollIndicator={false}
-      bounces={false}
-      contentInsetAdjustmentBehavior="never"
-      style={{flex: 1}}
-    />
+      <FlatList
+          ref={flatListRef}
+          data={dataWithEndCard}
+          keyExtractor={(item, index) =>
+              'type' in item && item.type === 'END_CARD' ? 'end-card' : (item as Recipe).id.id
+          }
+          renderItem={renderItem}
+
+          pagingEnabled
+          snapToInterval={ITEM_HEIGHT}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          disableIntervalMomentum={true}
+
+          getItemLayout={getItemLayout}
+          removeClippedSubviews
+          maxToRenderPerBatch={3}
+          windowSize={5}
+          initialNumToRender={2}
+
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
+          ListFooterComponentStyle={{ height: loading && hasMore ? ITEM_HEIGHT : NAVBAR_HEIGHT }}
+
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          overScrollMode="never"
+          scrollEventThrottle={16}
+
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+      />
   );
 };
 
