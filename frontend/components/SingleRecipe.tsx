@@ -3,6 +3,7 @@ import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
 import {LinearGradient} from "expo-linear-gradient";
 import {Feather} from "lucide-react-native";
+import {useRouter} from "expo-router";
 
 const { height: windowHeight } = Dimensions.get("window");
 const CARD_HEIGHT = Math.max(0, windowHeight - NAVBAR_HEIGHT);
@@ -12,6 +13,8 @@ type Props = {
 }
 
 const SingleRecipe: React.FC<Props> = ({recipe}: Props) => {
+  const router = useRouter();
+
   return (
       <ScrollView className="flex-1 bg-black pb-24">
         {/* Header Image */}
@@ -28,7 +31,7 @@ const SingleRecipe: React.FC<Props> = ({recipe}: Props) => {
 
           {/* Back Button */}
           <TouchableOpacity
-              onPress={onBack}
+              onPress={() => router.back()}
               className="absolute top-6 left-6 bg-black/50 p-3 rounded-full z-10"
           >
             {/*<Feather name="arrow-left" size={24} color="white" />*/}

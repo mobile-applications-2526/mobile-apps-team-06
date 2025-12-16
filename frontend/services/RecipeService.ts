@@ -20,6 +20,26 @@ const getRecipes = async(page: number = 0, size: number = 10) => {
     return response.json();
 }
 
+const getRecipeById = async(id: string) => {
+  try {
+    const response = await fetch(`${API_URL}/recipes/${id}`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + await getToken()
+      }
+    })
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+
+  } catch(error) {
+    console.error("Could not fetch recipe by id: " + error)
+  }
+}
+
 const searchRecipes = async(page: number = 0, size: number = 10, searchQuery: string) => {
     try {
       const response = await fetch(`${API_URL}/recipes/search?page=${page}&size=${size}&sortBy=createdAt&direction=DESC`,
@@ -78,6 +98,7 @@ const addRecipe = async(recipeInput: RecipeInput, imageURI: string) => {
 
 export default {
   getRecipes,
+  getRecipeById,
   searchRecipes,
   addRecipe,
 }
