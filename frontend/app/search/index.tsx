@@ -24,7 +24,6 @@ const SearchPage: React.FC = () => {
     }
 
     return (
-        <CheckIfAuthenticated>
             <View className="flex-1 bg-black">
                 <SearchBar
                     placeholder={"Type something here..."}
@@ -35,7 +34,6 @@ const SearchPage: React.FC = () => {
                 <DisplaySearchHistory onRemove={removeFromHistory} history={searchHistory}/>
                 <Navbar/>
             </View>
-        </CheckIfAuthenticated>
     );
 }
 
