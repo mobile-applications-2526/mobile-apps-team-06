@@ -2,20 +2,30 @@ import { RecipeService } from "@/services/RecipeService";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
+import {Recipe} from "@/types/types";
 
 export default function RecipeOverview() {
-  const recipeService = RecipeService;
-  const { id } = useLocalSearchParams();
+  const { RecipeId } = useLocalSearchParams();
 
-  const [recipe, setRecipe] = useState(null);
+  const [recipe, setRecipe] = useState<Recipe>();
+
+  const fetchRecipe = async (recipeId: string) => {
+    if (!recipeId) {
+      return;
+    }
+    const response = await RecipeService.getRecipeById(recipeId.toString());
+
+    setRecipe(response.json);
+  }
 
   useEffect(() => {
-    recipeService.getRecipeById(id.toString()).then(setRecipe);
-  }, [id]);
+    fetchRecipe(RecipeId as string);
+  }, []);
 
   return (
     <View className="bg-green-500">
-      <Text>Recipe ID: {id}</Text>
+      <Text>Recipe ID: {RecipeId}</Text>
     </View>
+
   );
 }

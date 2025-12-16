@@ -23,7 +23,7 @@ export const RecipeService = {
 
   async getRecipeById(id: string) {
     const response = await fetch(`${API_URL}/recipes/${id}`, {
-      method: "Get",
+      method: "GET",
       headers: {
         Authorization: "Bearer " + (await getToken()),
       },

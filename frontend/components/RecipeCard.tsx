@@ -32,7 +32,7 @@ const RecipeCard: React.FC<Props> = ({recipe}: Props) => {
         </Text>
         <Button 
         title="More Info"
-        onPress={() => router.push(`/recipe/${recipe.id}`)}
+        onPress={() => router.push(`/recipe/${recipe.id.id}`)}
       />
       </View>
     </ImageBackground>
