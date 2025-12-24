@@ -1,4 +1,5 @@
 import { Recipe } from "@/types/types";
+import { router } from "expo-router";
 import { useRef } from "react";
 import { View, Image, Animated, Pressable, FlatList } from "react-native";
 
@@ -24,7 +25,7 @@ const GridItem = ({ item }: { item: Recipe }) => {
 
   return (
     <Pressable
-      onPress={() => console.log(item.coverImageURL)}
+      onPress={() => router.push(`/recipe/${item.id.id}`)}
       onPressIn={pressIn}
       onPressOut={pressOut}
       className="w-1/3 p-[1px]"
