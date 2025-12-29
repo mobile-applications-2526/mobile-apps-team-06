@@ -100,9 +100,69 @@ const addRecipe = async (recipeInput: RecipeInput, imageURI: string) => {
   }
 };
 
+const checkFavorite = async(id: string) => {
+  try {
+    const response = await fetch(`${API_URL}/recipes/checkfavorite/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + (await getToken()),
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Could not check if favorite recipe by id: " + error);
+  }
+}
+
+const favoriteARecipe = async(id: string) => {
+  try {
+    const response = await fetch(`${API_URL}/recipes/favorite/${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + (await getToken()),
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response
+  } catch (error) {
+    console.error("Could not favorite recipe by id: " + error);
+  }
+}
+
+const unFavoriteARecipe = async(id: string) => {
+  try {
+    const response = await fetch(`${API_URL}/recipes/unfavorite/${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + (await getToken()),
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response
+  } catch (error) {
+    console.error("Could not unfavorite recipe by id: " + error);
+  }
+}
+
 export default {
   getRecipes,
   getRecipeById,
   searchRecipes,
   addRecipe,
+  checkFavorite,
+  favoriteARecipe,
+  unFavoriteARecipe
 };
