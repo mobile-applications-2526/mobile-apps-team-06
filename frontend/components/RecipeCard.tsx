@@ -34,7 +34,7 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
     const next = !isFavorite;
 
     setLoading(true);
-    setIsFavorite(next); // optimistic update
+    setIsFavorite(next);
 
     try {
       if (next) {
@@ -43,13 +43,12 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
         await RecipeService.unFavoriteARecipe(recipe.id.id);
       }
     } catch (e) {
-      setIsFavorite(!next); // revert on failure
+      setIsFavorite(!next);
       console.error('Favorite toggle failed', e);
     } finally {
       setLoading(false);
     }
   };
-  // ...existing code...
 
   useEffect(() => {
     let cancelled = false;
@@ -62,8 +61,7 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
       }
     })();
     return () => { cancelled = true; };
-  }, [recipe.id.id]); // do NOT depend on isFavorite
-  // ...existing code...
+  }, [recipe.id.id]);
 
   return (
     <View style={{ height: windowHeight, width: windowWidth }}>
