@@ -10,18 +10,58 @@ import { Heart, ChevronRight, ArrowBigDown } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import {useEffect, useState} from "react";
+import RecipeService from "@/services/RecipeService";
 
 type Props = {
   recipe: Recipe;
 };
 
 const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
   const imageUrl =
     recipe.coverImageURL ||
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80";
+
+
+  const handleFavorite = async () => {
+    if (loading) return;
+    const next = !isFavorite;
+
+    setLoading(true);
+    setIsFavorite(next);
+
+    try {
+      if (next) {
+        await RecipeService.favoriteARecipe(recipe.id.id);
+      } else {
+        await RecipeService.unFavoriteARecipe(recipe.id.id);
+      }
+    } catch (e) {
+      setIsFavorite(!next);
+      console.error('Favorite toggle failed', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const fav = await RecipeService.checkFavorite(recipe.id.id);
+        if (!cancelled) setIsFavorite(!!fav);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [recipe.id.id]);
 
   return (
     <View style={{ height: windowHeight, width: windowWidth }}>
@@ -84,8 +124,12 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
                 </Text>
               </View>
               {/* like heart */}
-              <TouchableOpacity className="mt-2">
-                <Heart size={32} color="#fff" fill="#fff" />
+              <TouchableOpacity onPress={() => handleFavorite()} className="mt-2">
+                <Heart
+                    size={32}
+                    color={isFavorite ? "red" : "#fff"}
+                    fill={isFavorite ? "red" : "transparent"}
+                />
               </TouchableOpacity>
             </View>
 
