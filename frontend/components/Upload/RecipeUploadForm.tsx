@@ -48,7 +48,8 @@ const RecipeUploadForm: React.FC = () => {
 
 
     const requestPermission = async(): Promise<boolean> => {
-        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        console.log("permresult " + permissionResult)
         
         if (!permissionResult.granted) {
             return false;
@@ -64,7 +65,8 @@ const RecipeUploadForm: React.FC = () => {
         let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ['images'],
                 allowsEditing: true,
-                aspect: [16,9],
+                aspect: [4,3],
+                m
                 quality: 1,
                 allowsMultipleSelection: false
             }
@@ -95,7 +97,7 @@ const RecipeUploadForm: React.FC = () => {
             tags,
             steps
         }
-        // console.log(JSON.stringify(recipeInput))
+        console.log(JSON.stringify(recipeInput))
 
         if (!image?.uri) {
             setError("No image file provided")
@@ -103,7 +105,7 @@ const RecipeUploadForm: React.FC = () => {
         }
 
         const response = await RecipeService.addRecipe(recipeInput, image.uri);
-
+        console.log(response)
         if (response?.ok) {
             setSuccess("Successfully created the recipe");
             
@@ -114,7 +116,9 @@ const RecipeUploadForm: React.FC = () => {
     
 
     useEffect(() => {
-        launchCamera()
+        if (Platform.OS === "ios") {
+                launchCamera();
+        }
     },[])
 
     return (
