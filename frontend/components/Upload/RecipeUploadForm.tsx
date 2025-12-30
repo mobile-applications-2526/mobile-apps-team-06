@@ -66,7 +66,6 @@ const RecipeUploadForm: React.FC = () => {
                 mediaTypes: ['images'],
                 allowsEditing: true,
                 aspect: [4,3],
-                m
                 quality: 1,
                 allowsMultipleSelection: false
             }
