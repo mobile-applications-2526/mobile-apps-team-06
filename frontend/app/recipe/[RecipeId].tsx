@@ -26,10 +26,7 @@ const RecipeOverview: React.FC = () => {
 
   return (
     <View className="flex-1 bg-black">
-      {recipe && <SingleRecipe recipe={recipe}/> ||
-          <View className="bg-white">
-            <Text>TESTTTTTTTTT</Text>
-          </View>
+      {recipe && <SingleRecipe recipe={recipe}/>
       }
       <Navbar/>
     </View>
