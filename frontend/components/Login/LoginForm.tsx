@@ -86,6 +86,7 @@ const LoginForm = () => {
                 <View className="mb-5">
                     <Text className="text-gray-300 mb-2 text-sm">Email</Text>
                     <TextInput
+                        testID="login-email"
                         className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                         keyboardType="email-address"
                         autoCapitalize="none"
@@ -100,6 +101,7 @@ const LoginForm = () => {
                 <View className="mb-5">
                     <Text className="text-gray-300 mb-2 text-sm">Password</Text>
                     <TextInput
+                        testID="login-password"
                         className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                         placeholder="••••••••"
                         placeholderTextColor="#777"
@@ -111,16 +113,19 @@ const LoginForm = () => {
                     {emailError && <Text className="text-red-500 font-semibold text-base text-center">
                         {emailError}
                     </Text>}
-                    {statusError && <Text className="text-red-500 font-semibold text-base text-center">
+                    {statusError && <Text className="text-red-500 font-semibold text-base text-center"
+                                          testID="login-error">
                         {statusError}
                     </Text>}
-                    {statusSuccess && <Text className="text-red-500 font-semibold text-base text-center">
+                    {statusSuccess && <Text className="text-red-500 font-semibold text-base text-center"
+                                            testID="login-success">
                         {statusSuccess}
                     </Text>}
 
                 {/* Log in Button */}
                 <TouchableOpacity
                     className="bg-red-500 py-3 rounded-lg items-center mt-2"
+                    testID="login-submit"
                     onPress={handleSubmit}
                 >
                     <Text className="text-white font-semibold text-base">
