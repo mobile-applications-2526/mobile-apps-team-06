@@ -10,7 +10,7 @@ import { View } from "react-native"
 
 const SearchTermPage = () => {
     const { SearchTermPage } = useLocalSearchParams();
-    console.log(SearchTermPage)
+    // console.log(SearchTermPage)
     const [search, setSearch] = useState<string>(SearchTermPage as string);
     const {searchHistory, addSearch, clearHistory, removeFromHistory} = useSearchHistory();
     const router = useRouter();

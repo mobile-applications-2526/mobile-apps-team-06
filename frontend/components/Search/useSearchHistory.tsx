@@ -15,8 +15,8 @@ const useSearchHistory = () => {
     const saveHistory = async(newHistory: string[]) => {
         setSearchHistory(newHistory);
         await AsyncStorage.setItem("searchHistory", JSON.stringify(newHistory));
-        console.log(await AsyncStorage.getItem("searchHistory"))
-        console.log(newHistory)
+        // console.log(await AsyncStorage.getItem("searchHistory"))
+        // console.log(newHistory)
     }
 
     const addSearch = async(newSearch: string) => {

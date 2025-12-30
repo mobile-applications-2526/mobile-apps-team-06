@@ -5,6 +5,7 @@ import { ActivityIndicator, View, Text, FlatList, Pressable, Image, Dimensions, 
 import {format} from 'date-fns'
 import DateFormatter from "../DateFormatter";
 import { Heart } from "lucide-react-native";
+import {router, useRouter} from "expo-router";
 
 type Props = {
     searchterm: string;
@@ -20,6 +21,8 @@ const DisplaySearchedResults: React.FC<Props> = ({searchterm}: Props) => {
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const [page, setPage] = useState<number>(0);
     const [hasMore, setHasMore] = useState<boolean>(true);
+
+    const router = useRouter();
 
     const loadRecipes = async(pageNum: number, isInitial = false) => {
         if (loading) return;
@@ -93,6 +96,7 @@ const DisplaySearchedResults: React.FC<Props> = ({searchterm}: Props) => {
 
         return (
         <Pressable
+            onPress={() => router.push(`/recipe/${item.id.id}`)}
             onPressIn={onPressIn}
             onPressOut={onPressOut}
             className="m-1"

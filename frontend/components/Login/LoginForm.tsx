@@ -62,7 +62,14 @@ const LoginForm = () => {
                 role: loggedInUser.role
             }));
             setStatusSuccess("Successfully logged in! Redirecting you to the home page...")
-            router.replace('/');
+
+            setTimeout(() => {
+                setStatusSuccess("Successfully logged in! Redirecting you to the home page...")
+            }, 1000);
+
+            setTimeout(() => {
+                router.replace('/');
+            }, 1500);
         } else {
             setStatusError("Error occured while trying to log in! Try again...")
             console.error("Error setting storage in login");
@@ -114,7 +121,7 @@ const LoginForm = () => {
                     {statusError && <Text className="text-red-500 font-semibold text-base text-center">
                         {statusError}
                     </Text>}
-                    {statusSuccess && <Text className="text-red-500 font-semibold text-base text-center">
+                    {statusSuccess && <Text className="text-green-400 font-semibold text-base text-center">
                         {statusSuccess}
                     </Text>}
 

@@ -95,7 +95,7 @@ const RecipeUploadForm: React.FC = () => {
             tags,
             steps
         }
-        console.log(JSON.stringify(recipeInput))
+        // console.log(JSON.stringify(recipeInput))
 
         if (!image?.uri) {
             setError("No image file provided")

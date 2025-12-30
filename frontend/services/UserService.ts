@@ -3,7 +3,7 @@ import getToken from "@/utils/Token"
 
 const login = async(userLoginInput: UserLoginInput) => {
     try {
-        console.log(process.env.EXPO_PUBLIC_API_URL)
+        // console.log(process.env.EXPO_PUBLIC_API_URL)
         const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/users/login", {
         method: "POST",
         headers: {
@@ -19,7 +19,7 @@ const login = async(userLoginInput: UserLoginInput) => {
 
 const signUp = async(userSignupInput: UserSignupInput) => {
     try {
-        console.log(process.env.EXPO_PUBLIC_API_URL)
+        // console.log(process.env.EXPO_PUBLIC_API_URL)
         const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/users/signup", {
         method: "POST",
         headers: {

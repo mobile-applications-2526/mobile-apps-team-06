@@ -13,7 +13,7 @@ const getRecipes = async (page: number = 0, size: number = 10) => {
       },
     },
   );
-  console.log(response);
+  // console.log(response);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -57,7 +57,7 @@ const searchRecipes = async (
         body: JSON.stringify({ title: searchQuery }),
       },
     );
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

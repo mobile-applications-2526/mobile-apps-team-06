@@ -12,6 +12,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
+import useInterval from "use-interval";
 
 const SignupForm = () => {
     const [username, setUsername] = useState("");
@@ -65,8 +66,14 @@ const SignupForm = () => {
                 username: loggedInUser.username,
                 role: loggedInUser.role
             }));
-            setStatusSuccess("Successfully logged in! Redirecting you to the home page...")
-            router.replace('/');
+            setStatusSuccess("Successfully signed up! Redirecting you to the home page...")
+            setTimeout(() => {
+                setStatusSuccess("Successfully signed up! Redirecting you to the home page...")
+            }, 1000);
+
+            setTimeout(() => {
+                router.replace('/');
+            }, 1500)
         } else {
             setStatusError("Error occured while trying to log in! Try again...")
             console.error("Error setting storage in sign up");
@@ -132,7 +139,7 @@ const SignupForm = () => {
                 {statusError && <Text className="text-red-500 font-semibold text-base text-center">
                     {statusError}
                 </Text>}
-                {statusSuccess && <Text className="text-red-500 font-semibold text-base text-center">
+                {statusSuccess && <Text className="text-green-400 font-semibold text-base text-center">
                     {statusSuccess}
                 </Text>}
 
