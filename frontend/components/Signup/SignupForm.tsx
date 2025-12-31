@@ -90,6 +90,7 @@ const SignupForm = () => {
                 <View className="mb-5">
                     <Text className="text-gray-300 mb-2 text-sm">Username</Text>
                     <TextInput
+                        testID="usernameInput"
                         className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                         keyboardType="default"
                         autoCapitalize="none"
@@ -104,6 +105,7 @@ const SignupForm = () => {
                 <View className="mb-5">
                     <Text className="text-gray-300 mb-2 text-sm">Email</Text>
                     <TextInput
+                        testID="emailInput"
                         className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                         keyboardType="email-address"
                         autoCapitalize="none"
@@ -118,6 +120,7 @@ const SignupForm = () => {
                 <View className="mb-5">
                     <Text className="text-gray-300 mb-2 text-sm">Password</Text>
                     <TextInput
+                        testID="passwordInput"
                         className="h-12 rounded-lg px-4 bg-neutral-900 border border-neutral-700 text-white"
                         placeholder="••••••••"
                         placeholderTextColor="#777"
@@ -138,6 +141,7 @@ const SignupForm = () => {
 
                 {/* Log in Button */}
                 <TouchableOpacity
+                    testID="signupButton"
                     className="bg-red-500 py-3 rounded-lg items-center mt-2"
                     onPress={handleSubmit}
                 >

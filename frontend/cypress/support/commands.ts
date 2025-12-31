@@ -35,3 +35,24 @@
 //     }
 //   }
 // }
+import cypress from "cypress";
+
+// @ts-ignore
+Cypress.Commands.add('login', (email: string, password: string) => {
+    cy.visit('/login');
+
+    cy.get('[data-testid="emailInput"]').click();
+    cy.get('[data-testid="emailInput"]').type('jorrit@email.com');
+
+    cy.get('[data-testid="passwordInput"]').click();
+    cy.get('[data-testid="passwordInput"]').type('jorrit123');
+
+    cy.get('[data-testid="loginButton"]').click();
+
+    cy.url().should('not.include', '/login');
+});
+
+// @ts-ignore
+Cypress.Commands.add('waitForRecipes', () => {
+    cy.get('[data-testid="recipe-card"]', { timeout: 10000 }).should('exist');
+});

@@ -95,7 +95,9 @@ const RecipeFeed = () => {
 
   if (initialLoading) {
     return (
-        <View className="flex-1 bg-black justify-center items-center">
+        <View
+            testID="recipe-feed-loading"
+            className="flex-1 bg-black justify-center items-center">
           <ActivityIndicator size="large" color="#fff" />
           <Text className="text-white mt-4">Loading recipes...</Text>
         </View>
@@ -104,6 +106,7 @@ const RecipeFeed = () => {
 
   return (
       <FlatList
+          testID="recipe-feed"
           ref={flatListRef}
           data={dataWithEndCard}
           keyExtractor={(item, index) =>
