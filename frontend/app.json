@@ -49,6 +49,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fe403d2f-fac0-4c01-bcbe-0ad036dc31ab"
+      }
+    },
+    "owner": "flappy69"
   }
 }
