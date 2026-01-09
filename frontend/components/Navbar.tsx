@@ -1,6 +1,6 @@
-import { Link, Stack, useRouter } from "expo-router";
-import { Home, PersonStanding, Plus, User } from "lucide-react-native";
-import { View, Text } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { Home, Plus, User } from "lucide-react-native";
+import { View } from "react-native";
 
 export const NAVBAR_HEIGHT = 72;
 
@@ -16,7 +16,9 @@ const Navbar = () => {
                 <Link className="text-lg text-slate-700" href={"/upload"} replace>
                     <Plus color={"white"}/>
                 </Link>
-                <Link className="text-lg text-slate-700" href={"/account"} replace>
+                <Link 
+                testID="account-button"
+                className="text-lg text-slate-700" href={"/account"} replace>
                     <User color={"white"}/>
                 </Link>
             </View>

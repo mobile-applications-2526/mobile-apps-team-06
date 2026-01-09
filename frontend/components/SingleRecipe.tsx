@@ -1,9 +1,9 @@
-import { ScrollView, View, TouchableOpacity, Text, Image } from "react-native";
-import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeft, CookingPot, ChefHat, Heart } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { ArrowLeft, ChefHat, CookingPot, Heart } from "lucide-react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { NAVBAR_HEIGHT } from "./Navbar";
 
 type Props = {
   recipe: Recipe;
@@ -15,6 +15,7 @@ const SingleRecipe: React.FC<Props> = ({ recipe }: Props) => {
 
   return (
     <ScrollView
+      testID="single-recipe"
       className="flex-1 bg-black pb-24"
       contentContainerStyle={{ paddingBottom: NAVBAR_HEIGHT + 24 }}
     >
