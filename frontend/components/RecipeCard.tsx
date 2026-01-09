@@ -64,7 +64,9 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
   }, [recipe.id.id]);
 
   return (
-    <View style={{ height: windowHeight, width: windowWidth }}>
+    <View
+        testID="recipe-card"
+        style={{ height: windowHeight, width: windowWidth }}>
       <ImageBackground
         source={{ uri: imageUrl }}
         resizeMode="cover"
@@ -104,6 +106,7 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
           <View className="items-end mb-4 pr-2">
             <View className="items-center">
               <TouchableOpacity
+                  testID="see-full-recipe-button"
                 onPress={() => router.push(`/recipe/${recipe.id.id}`)}
                 className="bg-white rounded-full p-3 mb-2 "
               >
@@ -119,12 +122,16 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
           <View style={{ paddingBottom: insets.bottom + 84 }} className="px-6">
             <View className="flex-row items-start justify-between mb-3">
               <View className="flex-1 pr-4">
-                <Text className="text-white text-4xl font-bold leading-tight">
+                <Text
+                    testID="recipe-card-title"
+                    className="text-white text-4xl font-bold leading-tight">
                   {recipe.title}
                 </Text>
               </View>
               {/* like heart */}
-              <TouchableOpacity onPress={() => handleFavorite()} className="mt-2">
+              <TouchableOpacity
+                    testID="favorite-button"
+                  onPress={() => handleFavorite()} className="mt-2">
                 <Heart
                     size={32}
                     color={isFavorite ? "red" : "#fff"}
@@ -133,7 +140,9 @@ const RecipeCard: React.FC<Props> = ({ recipe }: Props) => {
               </TouchableOpacity>
             </View>
 
-            <Text className="text-white/90 text-base leading-relaxed mb-3">
+            <Text
+                testID="recipe-card-description"
+                className="text-white/90 text-base leading-relaxed mb-3">
               {recipe.description}
             </Text>
 

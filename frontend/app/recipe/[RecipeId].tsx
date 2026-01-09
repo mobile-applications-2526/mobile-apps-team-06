@@ -1,10 +1,10 @@
+import Navbar from "@/components/Navbar";
+import SingleRecipe from "@/components/SingleRecipe";
 import RecipeService from "@/services/RecipeService";
+import { Recipe } from "@/types/types";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import {Recipe} from "@/types/types";
-import SingleRecipe from "@/components/SingleRecipe";
-import Navbar from "@/components/Navbar";
+import { View } from "react-native";
 
 const RecipeOverview: React.FC = () => {
   const { RecipeId } = useLocalSearchParams();
@@ -26,7 +26,11 @@ const RecipeOverview: React.FC = () => {
 
   return (
     <View className="flex-1 bg-black">
-      {recipe && <SingleRecipe recipe={recipe}/>
+      {recipe && <SingleRecipe recipe={recipe}/> ||
+          <View
+              testID="recipe-loading"
+              className="bg-white">
+          </View>
       }
       <Navbar/>
     </View>

@@ -1,8 +1,7 @@
-import { View } from "react-native";
 import Navbar from "@/components/Navbar";
-import CheckIfAuthenticated from "@/components/CheckIfAuthenticated";
 import RecipeFeed from "@/components/RecipeFeed";
 import TopNavBar from "@/components/TopNavBar";
+import { View } from "react-native";
 
 const Home = () => {
   return (

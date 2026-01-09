@@ -1,9 +1,9 @@
-import { ScrollView, View, TouchableOpacity, Text, Image } from "react-native";
-import { NAVBAR_HEIGHT } from "./Navbar";
 import { Recipe } from "@/types/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeft, CookingPot, ChefHat, Heart } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { ArrowLeft, ChefHat, CookingPot, Heart } from "lucide-react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { NAVBAR_HEIGHT } from "./Navbar";
 
 type Props = {
   recipe: Recipe;
@@ -15,12 +15,14 @@ const SingleRecipe: React.FC<Props> = ({ recipe }: Props) => {
 
   return (
     <ScrollView
+      testID="single-recipe"
       className="flex-1 bg-black pb-24"
       contentContainerStyle={{ paddingBottom: NAVBAR_HEIGHT + 24 }}
     >
       {/* Header Image */}
       <View className="relative h-80 overflow-hidden">
         <Image
+            testID="recipe-image"
           source={{ uri: recipe.coverImageURL }}
           className="w-full h-full"
           resizeMode="cover"
@@ -49,10 +51,14 @@ const SingleRecipe: React.FC<Props> = ({ recipe }: Props) => {
 
         {/* Title Overlay */}
         <View className="absolute bottom-0 left-0 right-0 p-6">
-          <Text className="text-4xl font-bold text-white mb-2">
+          <Text
+              testID="recipe-title"
+              className="text-4xl font-bold text-white mb-2">
             {recipe.title}
           </Text>
-          <Text className="text-white/80">{recipe.description}</Text>
+          <Text
+              testID="recipe-description"
+              className="text-white/80">{recipe.description}</Text>
         </View>
       </View>
 
@@ -79,24 +85,32 @@ const SingleRecipe: React.FC<Props> = ({ recipe }: Props) => {
         <View className="bg-white/5 rounded-xl p-4 flex items-center gap-2">
           <CookingPot size={20} color="rgba(255,255,255,0.6)" />
           <Text className="text-white/60 text-sm">Prep Time</Text>
-          <Text className="text-white">{recipe.prepare_time} min</Text>
+          <Text
+              testID="recipe-prep-time"
+              className="text-white">{recipe.prepare_time} min</Text>
         </View>
         <View className="bg-white/5 rounded-xl p-4 flex items-center gap-2">
           <ChefHat size={20} color="rgba(255,255,255,0.6)" />
           <Text className="text-white/60 text-sm">Difficulty</Text>
-          <Text className="text-white">{recipe.difficulty}</Text>
+          <Text
+              testID="recipe-difficulty"
+              className="text-white">{recipe.difficulty}</Text>
         </View>
         <View className="bg-white/5 rounded-xl p-4 flex items-center gap-2">
           <Heart size={20} color="rgba(255,255,255,0.6)" />
           <Text className="text-white/60 text-sm">Favorites</Text>
-          <Text className="text-white">{recipe.favorites.length}</Text>
+          <Text
+              testID="recipe-favorites"
+              className="text-white">{recipe.favorites.length}</Text>
         </View>
       </View>
 
       {/* Ingredients Section */}
       <View className="px-6 py-4">
         <Text className="text-2xl text-white mb-4">Ingredients</Text>
-        <View className="bg-white/5 rounded-2xl p-6 space-y-3">
+        <View
+            testID="recipe-ingredients"
+            className="bg-white/5 rounded-2xl p-6 space-y-3">
           {recipe.ingredients.map((ingredient, index) => (
             <View key={index} className="flex-row items-center gap-3">
               <View className="w-2 h-2 rounded-full bg-white/60" />
@@ -109,7 +123,9 @@ const SingleRecipe: React.FC<Props> = ({ recipe }: Props) => {
       {/* Steps Section */}
       <View className="px-6 py-4">
         <Text className="text-2xl text-white mb-4">Steps</Text>
-        <View className="space-y-4">
+        <View
+            testID="recipe-steps"
+            className="space-y-4">
           {recipe.steps.map((step, index) => (
             <View key={index} className="flex-row gap-4 p-2 items-center">
               <View className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
